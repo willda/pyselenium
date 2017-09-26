@@ -13,4 +13,4 @@ def test_search_selenium(driver):
 
     result_page = SearchResultPage(driver)
     assert result_page.result_link.text == 'docs.seleniumhq.org', 'Ссылка не найдена'
-    ```
+```
