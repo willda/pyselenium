@@ -1,7 +1,3 @@
-## Coming soon...
-### Пример использования
-
-```python
 import selenium.webdriver
 from pyselenium import Page, Element, By
 
@@ -31,4 +27,3 @@ def test_search_selenium():
 
     result_page = SearchResultPage(driver)
     assert result_page.result_link.text == 'docs.seleniumhq.org', 'Ссылка не найдена'
-```
