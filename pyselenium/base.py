@@ -103,9 +103,10 @@ class Element(collections.Sequence):
         return self
 
     def wait_elements(self, condition=None, timeout=None):
-        page = self.page
-        while not isinstance(page, Page):
-            page = page.parent_el
+        parent_el = self
+        while not isinstance(parent_el, Page):
+            parent_el = parent_el.parent_el
+        page = parent_el
         if isinstance(self.parent_el, Element):
             self.parent_el.raise_if_not_found()
             root = self.parent_el.element
