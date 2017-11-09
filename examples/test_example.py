@@ -38,7 +38,7 @@ def test_search():
     page.search_field = 'cats'
     page.search_field.send_keys(Keys.ENTER)
     assert len(result_page.results[:4]) == 4
-    assert any('youtube' in i.link.get_attribute('href') for i in result_page.results[:4])
+    assert any('youtube' in i.link.get_attribute('href') for i in result_page.results[:10])
 
     driver.close()
 

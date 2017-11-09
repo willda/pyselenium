@@ -1,4 +1,5 @@
 import collections
+import itertools
 import urllib.parse
 
 from selenium.webdriver.common.by import By
@@ -33,7 +34,10 @@ class Page:
         """
         if parent_el is None:
             parent_el = self
-        for child_el in vars(type(parent_el)).values():
+        for child_el in itertools.chain(
+            *(vars(base).values() for base in type(parent_el).__bases__),
+            vars(type(parent_el)).values()
+        ):
             if not isinstance(child_el, Element):
                 continue
             child_el.parent_el = parent_el
@@ -93,7 +97,7 @@ class Element(collections.Sequence):
 
     @property
     def _elements_list(self):
-        elements = self.wait_elements()
+        elements = self.wait_elements() or []
         return elements[self._slice] if self._slice is not None else elements
 
     def wait(self, condition=None, timeout=None):
