@@ -97,7 +97,7 @@ class Element(collections.Sequence):
 
     @property
     def _elements_list(self):
-        elements = self.wait_elements() or []
+        elements = list(self.wait_elements()) or []
         return elements[self._slice] if self._slice is not None else elements
 
     def wait(self, condition=None, timeout=None):
