@@ -1,5 +1,6 @@
 import collections
 import itertools
+import functools
 import urllib.parse
 
 from selenium.webdriver.common.by import By
@@ -59,6 +60,15 @@ class Page:
 
     def scroll(self, height=None):
         self.driver.execute_script(f'window.scrollTo(0, {height or "document.body.scrollHeight"});')
+
+
+def chainable(method):
+    @functools.wraps(method)
+    def inner(self, *args, **kwargs):
+        self.raise_if_not_found()
+        method(self, *args, **kwargs)
+        return self
+    return inner
 
 
 class Element(collections.Sequence):
@@ -197,6 +207,14 @@ class Element(collections.Sequence):
             f'[{self.locator[0]}={self.locator[1]}]>'
         )
 
+    @chainable
+    def click(self):
+        self.element.click()
+
+    @chainable
+    def clear(self):
+        self.element.click()
+
+    @chainable
     def hover(self):
-        self.raise_if_not_found()
-        return ActionChains(self.page.driver).move_to_element(self.element).perform()
+        ActionChains(self.page.driver).move_to_element(self.element).perform()
